@@ -318,6 +318,13 @@ Utils.readBigUInt64LE = function (/*Buffer*/ buffer, /*int*/ index) {
     return parseInt(`0x${slice.toString("hex")}`);
 };
 
+Utils.writeBigUInt64LE = function (/*Buffer*/ buffer, /*Number*/ value, /*int*/ index) {
+    const lo = value >>> 0;
+    const hi = Math.floor(value / 0x100000000) >>> 0;
+    buffer.writeUInt32LE(lo, index);
+    buffer.writeUInt32LE(hi, index + 4);
+};
+
 Utils.fromDOS2Date = function (val) {
     return new Date(((val >> 25) & 0x7f) + 1980, Math.max(((val >> 21) & 0x0f) - 1, 0), Math.max((val >> 16) & 0x1f, 1), (val >> 11) & 0x1f, (val >> 5) & 0x3f, (val & 0x1f) << 1);
 };
